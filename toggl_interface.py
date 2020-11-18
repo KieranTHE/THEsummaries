@@ -13,7 +13,7 @@ with open('secrets.json') as secrets_file:
   secrets = json.load(secrets_file)
 logging.debug(secrets['toggl_api_key'])
 
-#request detailed report from toggl
+#header and param details for api requests
 string_api = secrets['toggl_api_key'] + ':' + "api_token"
 
 headers = {
