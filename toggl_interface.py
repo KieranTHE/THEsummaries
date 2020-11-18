@@ -20,7 +20,7 @@ headers = {
     'Authorization' : 'Basic '+ base64.b64encode(string_api.encode('ascii')).decode("utf-8"),
 }
 
-params={'user_agent':secrets['email'],'workspace_id':'4435390'}
+params={'user_agent':secrets['email'],'workspace_id':secrets['workspace_id']}
 
 
 #me details
