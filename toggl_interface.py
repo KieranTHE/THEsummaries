@@ -105,7 +105,7 @@ while leap < today :
     for client in result_df['CLIENT'].unique():
         client_df = result_df[result_df['CLIENT'] == client]
         client_df.to_csv(
-            start_date.strftime("%Y%m%d") + '-' + end_fortnight.strftime("%Y%m%d") + '_' + client + '.csv',
+            secrets['store_location'] + start_date.strftime("%Y%m%d") + '-' + end_fortnight.strftime("%Y%m%d") + '_' + client + '.csv',
             index=False
             )
 
