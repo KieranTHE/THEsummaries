@@ -6,6 +6,7 @@ import sys
 import pandas as pd
 import datetime
 import time
+import math
 
 
 #set logging
@@ -85,7 +86,21 @@ while leap < today :
         quit()
 
     response=response.json()
+    #logging.debug(response)
     response_df = pd.json_normalize(response['data'])
+
+    if response['total_count'] > response['per_page']:
+        page = 1
+        while page <= math.floor(response['total_count']/response['per_page']):
+            params['page'] = page + 1
+            response2=requests.get(url,headers=headers,params=params)
+            if response2.status_code!=200:
+                logging.error(response2.text)
+                quit()
+            response2=response2.json()
+            response_df = response_df.append(pd.json_normalize(response2['data']))
+            page = page + 1
+
     response_df.rename(
         columns={
             'client':'CLIENT',
@@ -95,6 +110,7 @@ while leap < today :
             'start':'START'
             }, 
         inplace=True)
+    #logging.debug(response_df)
     grouped_df = response_df.groupby(by=['CLIENT','PROJECT','START','DESCRIPTION'])['HOURS'].sum()
     result_df = grouped_df.div(3600000).round(decimals=2)
     result_df = result_df.reset_index()
@@ -110,8 +126,8 @@ while leap < today :
             )
 
     #update log
-    logged['last_run'] = (end_fortnight + datetime.timedelta(days=1)).isoformat()
-    with open("log.json", "w") as jsonFile:
-        json.dump(logged, jsonFile)
+    # logged['last_run'] = (end_fortnight + datetime.timedelta(days=1)).isoformat()
+    # with open("log.json", "w") as jsonFile:
+    #     json.dump(logged, jsonFile)
 
     time.sleep(2)
