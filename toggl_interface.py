@@ -128,12 +128,10 @@ while leap < today :
             with FTP(secrets['ftp_address'], secrets['ftp_username'], secrets['ftp_password']) as ftp, open(file_path, 'rb') as file:
                 ftp.cwd(secrets['ftp_store'])
                 ftp.storbinary(f'STOR {file_path.name}', file)
-            
 
-
-    #update log
-    # logged['last_run'] = (end_fortnight + datetime.timedelta(days=1)).isoformat()
-    # with open("log.json", "w") as jsonFile:
-    #     json.dump(logged, jsonFile)
+    u#pdate log
+    logged['last_run'] = (end_fortnight + datetime.timedelta(days=1)).isoformat()
+    with open("log.json", "w") as jsonFile:
+        json.dump(logged, jsonFile)
 
     time.sleep(2)
