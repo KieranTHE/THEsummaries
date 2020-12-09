@@ -124,10 +124,10 @@ while leap < today :
         csv_string = start_date.strftime("%Y%m%d") + '-' + end_fortnight.strftime("%Y%m%d") + '_' + client + '.csv'
         client_df.to_csv(secrets['store_location'] + csv_string, index=False)
         if secrets['ftp'] == "True":
-            file_path = Path(csv_string)
+            file_path = secrets['store_location'] + csv_string
             with FTP(secrets['ftp_address'], secrets['ftp_username'], secrets['ftp_password']) as ftp, open(file_path, 'rb') as file:
                 ftp.cwd(secrets['ftp_store'])
-                ftp.storbinary(f'STOR {file_path.name}', file)
+                ftp.storbinary(f'STOR {csv_string}', file)
 
     #update log
     logged['last_run'] = (end_fortnight + datetime.timedelta(days=1)).isoformat()
